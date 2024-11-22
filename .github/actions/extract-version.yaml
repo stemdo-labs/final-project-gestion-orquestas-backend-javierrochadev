@@ -1,0 +1,31 @@
+name: 'Extraer versión desde un YAML'
+description: 'Esta acción extrae la versión del campo <modelVersion> de un archivo YAML'
+inputs:
+  file:
+    description: 'El archivo YAML donde se encuentra la versión'
+    required: true
+    default: 'pom.xml'
+outputs:
+  version:
+    description: 'La versión extraída del archivo'
+
+runs:
+  using: 'composite'
+  steps:
+    - name: Extraer versión desde el archivo YAML
+      id: extract_version
+      shell: bash
+      run: |
+        version=$(grep -oP '<modelVersion>\K[0-9]+\.[0-9]+\.[0-9]+' ${{ inputs.file }})
+
+        if [[ -z "$version" ]]; then
+          echo "No se encontró la versión."
+          exit 1
+        fi
+
+        echo "La versión extraída es: $version"
+
+        echo "version=$version" >> $GITHUB_ENV
+
+    - name: Establecer la versión como output
+      run: echo "::set-output name=version::${{ env.version }}"

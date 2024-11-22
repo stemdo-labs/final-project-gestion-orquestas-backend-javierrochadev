@@ -1,0 +1,33 @@
+# .github/workflows/main-deploy.yaml
+name: Main Deployment Workflow
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v3
+
+      - name: Usar la acción para extraer la versión
+        uses: ./.github/actions/extract-version
+        id: extract_version
+        with:
+          file: '/pom.xml'
+
+      - name: Imprimir la versión extraída
+        id: show_version
+        run: echo "La versión es: ${{ steps.extract_version.outputs.version }}"
+
+     # - name: Build and Push Docker Image
+     #   id: build_image_and_upload
+     #   uses: ./.github/wokflows/upload_images
+     #   with:
+     #     acr_name: "myacrname"
+     #     image_name: "myapp"
+     #     image_tag: "${{ steps.extract_version.outputs.version }}"
