@@ -1,0 +1,22 @@
+# .github/workflows/main-deploy.yaml
+name: Main Deployment Workflow
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v3
+
+      - name: Build and Push Docker Image
+        uses: owner/repo/.github/workflows/publish-docker-image.yaml@main # Cambia "owner/repo" por el correcto
+        with:
+          acr_name: "myacrname"
+          image_name: "myapp"
+          image_tag: "v1.0.0"
