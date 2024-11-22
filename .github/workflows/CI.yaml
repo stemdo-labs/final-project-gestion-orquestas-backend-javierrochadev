@@ -20,14 +20,14 @@ jobs:
         with:
           file: '/pom.xml'
 
-      - name: Imprimir la versión extraída
-        id: show_version
-        run: echo "La versión es: ${{ steps.extract_version.outputs.version }}"
+      # - name: Imprimir la versión extraída
+      #   id: show_version
+      #   run: echo "La versión es: ${{ steps.extract_version.outputs.version }}"
 
-     # - name: Build and Push Docker Image
-     #   id: build_image_and_upload
-     #   uses: ./.github/wokflows/upload_images
-     #   with:
-     #     acr_name: "myacrname"
-     #     image_name: "myapp"
-     #     image_tag: "${{ steps.extract_version.outputs.version }}"
+      - name: Build and Push Docker Image
+        id: build_image_and_upload
+        uses: ./.github/wokflows/upload_images
+        with:
+          acr_name: ${{ secrets.ACR_NAME}}
+          image_name: "bacckend"
+          image_tag: "4.0.0"
