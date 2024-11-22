@@ -4,7 +4,7 @@ inputs:
   file:
     description: 'El archivo YAML donde se encuentra la versión'
     required: true
-    default: 'pom.yaml'
+    default: 'pom.xml'
 outputs:
   version:
     description: 'La versión extraída del archivo'
