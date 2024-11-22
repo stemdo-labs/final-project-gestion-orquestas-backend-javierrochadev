@@ -2,9 +2,7 @@
 name: Main Deployment Workflow
 
 on:
-  push:
-    branches:
-      - main
+  workflow_dispatch:
 
 jobs:
   deploy:
@@ -14,11 +12,11 @@ jobs:
       - name: Check out repository
         uses: actions/checkout@v3
 
-      - name: Usar la acción para extraer la versión
-        uses: ./.github/actions/extract-version
-        id: extract_version
-        with:
-          file: '/pom.xml'
+      # - name: Usar la acción para extraer la versión
+      #   uses: ./.github/actions/extract-version
+      #   id: extract_version
+      #   with:
+      #     file: '/pom.xml'
 
       # - name: Imprimir la versión extraída
       #   id: show_version
@@ -28,6 +26,6 @@ jobs:
         id: build_image_and_upload
         uses: ./.github/wokflows/upload_images
         with:
-          acr_name: ${{ secrets.ACR_NAME}}
-          image_name: "bacckend"
-          image_tag: "4.0.0"
+          acr_name: "myacrname"
+          image_name: "myapp"
+          image_tag: "${{ steps.extract_version.outputs.version }}"
