@@ -1,0 +1,45 @@
+# .github/workflows/publish-docker-image.yaml
+name: Publish Docker Image to ACR
+
+on:
+  workflow_call:
+    inputs:
+      acr_name:
+        description: "Azure Container Registry name"
+        required: true
+        type: string
+      image_name:
+        description: "Name of the Docker image"
+        required: true
+        type: string
+      image_tag:
+        description: "Tag for the Docker image"
+        required: false
+        type: string
+        default: "latest"
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v3
+
+      - name: Login to Azure with Service Principal
+        run: |
+          az login --service-principal \
+            -u ${{ secrets.ARM_CLIENT_ID }} \
+            -p ${{ secrets.ARM_CLIENT_SECRET }} \
+            --tenant ${{ secrets.ARM_TENANT_ID }}
+
+      - name: Log in to ACR
+        run: |
+          az acr login --name ${{ inputs.acr_name }}
+
+      - name: Build Docker Image
+        run: |
+          docker build -t ${{ inputs.acr_name }}.azurecr.io/${{ inputs.image_name }}:${{ inputs.image_tag }} .
+
+      - name: Push Docker Image
+        run: |
+          docker push ${{ inputs.acr_name }}.azurecr.io/${{ inputs.image_name }}:${{ inputs.image_tag }}
