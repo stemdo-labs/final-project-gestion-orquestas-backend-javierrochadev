@@ -24,7 +24,7 @@ jobs:
 
       - name: Build and Push Docker Image
         id: build_image_and_upload
-        uses: ./.github/wokflows/upload_images
+        uses: ./.github/actions/upload_image
         with:
           acr_name: "myacrname"
           image_name: "myapp"
