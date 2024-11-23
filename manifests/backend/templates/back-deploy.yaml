@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: backend-app
-        image: "{{ .Values.image.repository }}/{{ .Values.image.tag }}"
+        image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
         env:
           - name: SPRING_DB_HOST
             value: "{{ .Values.database.SPRING_DB_HOST }}"
@@ -28,5 +28,5 @@ spec:
             value: "{{ .Values.database.SPRING_DB_PASSWORD }}"
         ports:
           - containerPort: 8080  # Puerto que escucha tu backend
-      imagePullSecrets:
-        - name: "{{ .Values.image.pullSecret }}"
+      # imagePullSecrets:
+      #  - name: acr-secret-backend
