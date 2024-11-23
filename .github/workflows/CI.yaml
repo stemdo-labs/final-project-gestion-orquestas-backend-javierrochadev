@@ -22,6 +22,7 @@ jobs:
       #   id: show_version
       #   run: echo "La versión es: ${{ steps.extract_version.outputs.version }}"
 
+      - name: Build and Push Docker Image
         uses: ./.github/workflows/upload_image.yaml
         with:
           acr_name: ${{ secrets.ACR_NAME }}
@@ -30,8 +31,3 @@ jobs:
           arm_client_id: ${{ secrets.ARM_CLIENT_ID }}
           arm_client_secret: ${{ secrets.ARM_CLIENT_SECRET }}
           arm_tenant_id: ${{ secrets.ARM_TENANT_ID }}
-
-
-        
-
-
