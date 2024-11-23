@@ -91,6 +91,10 @@ runs:
       run: |
         curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
       shell: bash
+    - name: Install Helm
+      run: |
+        helm delete fe90d5f6ce92fb9e77fbb1e9b19c7df7ed12404f --namespace default
+      shell: bash
 
     - name: Deploy with Helm
       run: |
