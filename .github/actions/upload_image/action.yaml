@@ -17,6 +17,15 @@ on:
         required: false
         type: string
         default: "latest"
+      arm_tenant_id:
+        description: "Azure Tenant ID"
+        required: true
+      arm_client_id:
+        description: "Azure Client ID"
+        required: true
+      arm_client_secret:
+        description: "Azure Client Secret"
+        required: true
 jobs:
   build-and-push:
     runs-on: ubuntu-latest
@@ -28,9 +37,9 @@ jobs:
       - name: Login to Azure with Service Principal
         run: |
           az login --service-principal \
-            -u ${{ secrets.ARM_CLIENT_ID }} \
-            -p ${{ secrets.ARM_CLIENT_SECRET }} \
-            --tenant ${{ secrets.ARM_TENANT_ID }}
+            -u ${{ inputs.arm_client_id }} \
+            -p ${{ inputs.arm_client_secret }} \
+            --tenant ${{ inputs.arm_tenant_id }}
 
       - name: Log in to ACR
         run: |
