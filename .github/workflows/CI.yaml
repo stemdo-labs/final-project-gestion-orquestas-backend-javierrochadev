@@ -43,4 +43,5 @@ jobs:
           arm_tenant_id: ${{ secrets.ARM_TENANT_ID }}
           aks_resource_group: ${{ secrets.RESOURCE_GROUP_NAME }}
           aks_cluster_name: ${{ secrets.AKS_NAME }}
+          acr_secret_name: ${{ secrets.ACR_SECRET_NAME }}
           helm_chart_path: ./manifest/backend
