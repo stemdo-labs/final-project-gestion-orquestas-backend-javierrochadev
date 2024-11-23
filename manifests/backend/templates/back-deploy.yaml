@@ -15,18 +15,20 @@ spec:
     spec:
       containers:
       - name: backend-app
-        image: 
+        image: "{{ .Values.image.repository }}/{{ .Values.image.tag}}"
         env:
           - name: SPRING_DB_HOST
-            value: "{{ .Values.SPRING_DB_HOST }}"
+            value: "{{ .Values.database.SPRING_DB_HOST }}"
           - name: SPRING_DB_PORT
-            value: "{{ .Values.SPRING_DB_PORT }}"
+            value: "{{ .Values.database.SPRING_DB_PORT }}"
           - name: SPRING_DB_NAME
-            value: "{{ .Values.SPRING_DB_NAME }}"
+            value: "{{ .Values.database.SPRING_DB_NAME }}"
           - name: SPRING_DB_USER
-            value: "{{ .Values.SPRING_DB_USER }}"
+            value: "{{ .Values.database.SPRING_DB_USER }}"
           - name: SPRING_DB_PASSWORD
-            value: "{{ .Values.SPRING_DB_PASSWORD }}"
+            value: "{{ .Values.database.SPRING_DB_PASSWORD }}"
+      imagePullSecrets:
+      - name: "{{ .Values.image.pullSecret }}"
 
         ports:
         - containerPort: 8080  # Puerto que escucha tu backend
