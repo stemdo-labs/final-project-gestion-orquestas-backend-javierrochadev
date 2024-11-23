@@ -51,7 +51,11 @@ runs:
   steps:
     - name: Checkout code
       uses: actions/checkout@v3
-
+    - name: Print input values
+      run: |
+        echo "Resource Group: ${{ inputs.aks_resource_group }}"
+        echo "Cluster Name: ${{ inputs.aks_cluster_name }}"
+      shell: bash
     - name: Login to Azure with Service Principal
       run: |
         az login --service-principal \
