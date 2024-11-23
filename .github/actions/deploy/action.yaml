@@ -96,12 +96,12 @@ runs:
       run: |
         helm upgrade --install ${GITHUB_SHA} ./manifests/backend \
         --namespace default \
-        --set "image.repository=${{ inputs.acr_name }}.azurecr.io/${{ inputs.image_name }}" \
-        --set "image.tag=${{ inputs.image_tag }}" \
-        --set "image.pullSecret=${{ inputs.acr_secret_name }}" \
         --set "database.SPRING_DB_HOST=${{ inputs.db_host }}" \
         --set "database.SPRING_DB_PORT=${{ inputs.db_port }}" \
         --set "database.SPRING_DB_NAME=${{ inputs.db_name }}" \
         --set "database.SPRING_DB_USER=${{ inputs.db_user }}" \
         --set "database.SPRING_DB_PASSWORD=${{ inputs.db_pass }}"
       shell: bash
+        # --set "image.repository=${{ inputs.acr_name }}.azurecr.io/${{ inputs.image_name }}" \
+        # --set "image.tag=${{ inputs.image_tag }}" \
+        # --set "image.pullSecret=${{ inputs.acr_secret_name }}" \
