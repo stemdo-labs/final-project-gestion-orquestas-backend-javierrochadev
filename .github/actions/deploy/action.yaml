@@ -93,7 +93,7 @@ runs:
       shell: bash
     - name: Install Helm
       run: |
-        helm delete fe90d5f6ce92fb9e77fbb1e9b19c7df7ed12404f --namespace default
+        helm delete 2606c7d8dc5763260b9c1549d5b838159ca14fd4 --namespace default
       shell: bash
 
     - name: Deploy with Helm
