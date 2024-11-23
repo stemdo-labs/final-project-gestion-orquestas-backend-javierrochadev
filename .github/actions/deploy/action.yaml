@@ -41,6 +41,10 @@ inputs:
     description: 'Path to Helm chart directory'
     required: true
     type: string
+  acr_secret_name:
+    description: 'Secret acr name'
+    required: true
+    type: string
 
 runs:
   using: 'composite'
@@ -75,5 +79,5 @@ runs:
         --namespace default \
         --set image.repository=${{ inputs.acr_name }}.azurecr.io/${{ inputs.image_name }} \
         --set image.tag=${{ inputs.image_tag }} \
-        --set image.pullSecret=${{ secrets.ACR_SECRET_NAME }}
+        --set image.pullSecret=${{ inputs.acr_secret_name }}
       shell: bash
