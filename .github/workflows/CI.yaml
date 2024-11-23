@@ -29,3 +29,9 @@ jobs:
           acr_name: "myacrname"
           image_name: "myapp"
           image_tag: "${{ steps.extract_version.outputs.version }}"
+          arm_client_id: ${{ secrets.ARM_CLIENT_ID }}
+          arm_client_secret: ${{ secrets.ARM_CLIENT_SECRET }}
+          arm_tenant_id: ${{ secrets.ARM_TENANT_ID }}
+
+
+        
