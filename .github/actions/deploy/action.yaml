@@ -91,11 +91,6 @@ runs:
       run: |
         curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
       shell: bash
-    - name: Install Helm
-      run: |
-        kubectl delete svc backend-service -n default
-        kubectl delete deploy backend-app -n default
-      shell: bash
 
     - name: Deploy with Helm
       run: |
