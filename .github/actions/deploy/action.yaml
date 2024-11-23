@@ -59,15 +59,16 @@ runs:
           -u ${{ secrets.ARM_CLIENT_ID }} \
           -p ${{ secrets.ARM_CLIENT_SECRET }} \
           --tenant ${{ secrets.ARM_TENANT_ID }}
+      shell: bash
   
     - name: Get AKS credentials
       run: |
         az aks get-credentials --resource-group ${{ inputs.aks_resource_group }} --name ${{ inputs.aks_cluster_name }}
-
+      shell: bash
     - name: Install Helm
       run: |
         curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
-
+      shell: bash
     - name: Deploy with Helm
       run: |
         helm upgrade --install ${GITHUB_SHA} ${inputs.helm_chart_path} \
@@ -75,3 +76,4 @@ runs:
         --set image.repository=${{ inputs.acr_name }}.azurecr.io/${{ inputs.image_name }} \
         --set image.tag=${{ inputs.image_tag }} \
         --set image.pullSecret=${{ secrets.ACR_SECRET_NAME }}
+      shell: bash
