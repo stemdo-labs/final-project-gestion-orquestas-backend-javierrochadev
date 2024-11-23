@@ -1,0 +1,46 @@
+name: Publish Docker Image to ACR
+
+inputs:
+  acr_name:
+    description: "Azure Container Registry name"
+    required: true
+    type: string
+  image_name:
+    description: "Name of the Docker image"
+    required: true
+    type: string
+  image_tag:
+    description: "Tag for the Docker image"
+    required: false
+    type: string
+    default: "latest"
+  arm_tenant_id:
+    description: "Azure Tenant ID"
+    required: true
+  arm_client_id:
+    description: "Azure Client ID"
+    required: true
+  arm_client_secret:
+    description: "Azure Client Secret"
+    required: true
+runs:
+  using: 'composite'
+  steps:
+    - name: Check out code
+      uses: actions/checkout@v3
+    - name: Login to Azure with Service Principal
+      run: |
+        az login --service-principal \
+          -u ${{ inputs.arm_client_id }} \
+          -p ${{ inputs.arm_client_secret }} \
+          --tenant ${{ inputs.arm_tenant_id }}
+    - name: Log in to ACR
+      run: |
+        az acr login --name ${{ inputs.acr_name }}
+    - name: Build Docker Image
+      run: |
+        docker build -t ${{ inputs.acr_name }}.azurecr.io/${{ inputs.image_name }}:${{ inputs.image_tag }} .
+    - name: Push Docker Image
+      run: |
+        docker push ${{ inputs.acr_name }}.azurecr.io/${{ inputs.image_name }}:${{ inputs.image_tag }}
+        
