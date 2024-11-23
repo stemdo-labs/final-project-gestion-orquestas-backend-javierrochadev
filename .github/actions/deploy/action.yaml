@@ -1,0 +1,77 @@
+name: 'Deploy to AKS with Helm'
+description: 'Deploys an app to AKS using Helm'
+inputs:
+  acr_name:
+    description: 'Azure Container Registry name'
+    required: true
+    type: string
+  image_name:
+    description: 'Name of the Docker image'
+    required: true
+    type: string
+  image_tag:
+    description: 'Tag for the Docker image'
+    required: true
+    type: string
+  arm_client_id:
+    description: 'Azure Client ID'
+    required: true
+    type: string
+  arm_client_secret:
+    description: 'Azure Client Secret'
+    required: true
+    type: string
+  arm_tenant_id:
+    description: 'Azure Tenant ID'
+    required: true
+    type: string
+  arm_subscription_id:
+    description: 'Azure Subscription ID'
+    required: true
+    type: string
+  aks_resource_group:
+    description: 'Azure Resource Group of AKS'
+    required: true
+    type: string
+  aks_cluster_name:
+    description: 'Azure AKS Cluster Name'
+    required: true
+    type: string
+  helm_chart_path:
+    description: 'Path to Helm chart directory'
+    required: true
+    type: string
+
+runs:
+  using: 'composite'
+  steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Set up Azure CLI
+      uses: azure/cli-action@v1
+      with:
+        azure-cli-version: '2.43.0'
+
+    - name: Login to Azure with Service Principal
+      run: |
+        az login --service-principal \
+          -u ${{ secrets.ARM_CLIENT_ID }} \
+          -p ${{ secrets.ARM_CLIENT_SECRET }} \
+          --tenant ${{ secrets.ARM_TENANT_ID }}
+  
+    - name: Get AKS credentials
+      run: |
+        az aks get-credentials --resource-group ${{ inputs.aks_resource_group }} --name ${{ inputs.aks_cluster_name }}
+
+    - name: Install Helm
+      run: |
+        curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
+
+    - name: Deploy with Helm
+      run: |
+        helm upgrade --install ${GITHUB_SHA} ${inputs.helm_chart_path} \
+        --namespace default \
+        --set image.repository=${{ inputs.acr_name }}.azurecr.io/${{ inputs.image_name }} \
+        --set image.tag=${{ inputs.image_tag }} \
+        --set image.pullSecret=${{ secrets.ACR_SECRET_NAME }}
