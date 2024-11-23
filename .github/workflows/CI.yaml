@@ -26,9 +26,9 @@ jobs:
         id: build_image_and_upload
         uses: ./.github/actions/upload_image
         with:
-          acr_name: "myacrname"
+          acr_name: ${{ secrets.ACR_NAME }}
           image_name: "myapp"
-          image_tag: "${{ steps.extract_version.outputs.version }}"
+          image_tag: "4.0.0"
           arm_client_id: ${{ secrets.ARM_CLIENT_ID }}
           arm_client_secret: ${{ secrets.ARM_CLIENT_SECRET }}
           arm_tenant_id: ${{ secrets.ARM_TENANT_ID }}
