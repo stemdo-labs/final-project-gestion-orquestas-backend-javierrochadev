@@ -24,7 +24,7 @@ jobs:
 
       - name: Build and Push Docker Image
         id: build_image_and_upload
-        uses: ./.github/actions/upload_image
+        uses: ./.github/workflows/upload_image.yaml
         with:
           acr_name: ${{ secrets.ACR_NAME }}
           image_name: "myapp"
