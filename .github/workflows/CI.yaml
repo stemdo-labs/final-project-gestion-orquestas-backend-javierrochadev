@@ -23,7 +23,7 @@ jobs:
       #   run: echo "La versión es: ${{ steps.extract_version.outputs.version }}"
 
       - name: Build and Push Docker Image
-        uses: ./.github/workflows/upload_image.yaml
+        uses: ./.github/actions/upload_image
         with:
           acr_name: ${{ secrets.ACR_NAME }}
           image_name: "myapp"
