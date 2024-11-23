@@ -73,7 +73,7 @@ runs:
       shell: bash
     - name: Deploy with Helm
       run: |
-        helm upgrade --install ${GITHUB_SHA} ${inputs.helm_chart_path} \
+        helm upgrade --install ${GITHUB_SHA} ./manifest/backend \
         --namespace default \
         --set image.repository=${{ inputs.acr_name }}.azurecr.io/${{ inputs.image_name }} \
         --set image.tag=${{ inputs.image_tag }} \
