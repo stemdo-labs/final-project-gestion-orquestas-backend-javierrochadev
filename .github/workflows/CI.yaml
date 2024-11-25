@@ -31,8 +31,8 @@ jobs:
         run: |
           ./upload_version.sh "$NEW_VERSION"
 
-      - name: Build and Push Docker Image
-        uses: ./.github/actions/upload_image
+      - name: CI
+        uses: ./.github/actions/CI
         with:
           acr_name: ${{ secrets.ACR_NAME }}
           image_name: "myapp-backend"
@@ -41,8 +41,8 @@ jobs:
           arm_client_secret: ${{ secrets.ARM_CLIENT_SECRET }}
           arm_tenant_id: ${{ secrets.ARM_TENANT_ID }}
 
-      - name: Upload an image
-        uses: ./.github/actions/deploy
+      - name: CD
+        uses: ./.github/actions/CD
         with:
           acr_name: ${{ secrets.ACR_NAME }}
           image_name: "myapp-backend"
