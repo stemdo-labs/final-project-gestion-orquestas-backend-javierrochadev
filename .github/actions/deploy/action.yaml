@@ -139,7 +139,7 @@ runs:
           --set "image.repository=${{ inputs.acr_name }}.azurecr.io/${{ inputs.image_name }}" \
           --set "image.tag=${{ inputs.image_tag }}" \
           --set "image.pullSecret=${{ inputs.acr_secret_name }}"
-          shell: bash
+    shell: bash
           
 #   --set "image.tag=1.0" \
 # --set "image.repository=${{ inputs.acr_name }}.azurecr.io/${{ inputs.image_name }}" \
