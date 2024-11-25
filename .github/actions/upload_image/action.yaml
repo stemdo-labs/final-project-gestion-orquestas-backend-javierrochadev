@@ -19,7 +19,6 @@ inputs:
     required: true
 
 runs:
-  using: 'bash'
   steps:
     - name: Checkout repository
       uses: actions/checkout@v3
