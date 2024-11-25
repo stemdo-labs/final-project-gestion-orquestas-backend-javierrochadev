@@ -1,50 +1,47 @@
-name: Publish Docker Image to ACR
+name: 'Package and Push Helm Chart to Harbor'
+description: 'Package Helm chart and push it to Harbor'
 
 inputs:
-  acr_name:
-    description: "Azure Container Registry name"
+  harbor_username:
+    description: 'Username for Harbor'
     required: true
-    type: string
-  image_name:
-    description: "Name of the Docker image"
+  harbor_password:
+    description: 'Password for Harbor'
     required: true
-    type: string
-  image_tag:
-    description: "Tag for the Docker image"
-    required: false
-    type: string
-    default: "latest"
-  arm_tenant_id:
-    description: "Azure Tenant ID"
+  harbor_ip:
+    description: 'IP address or domain of Harbor'
     required: true
-  arm_client_id:
-    description: "Azure Client ID"
+  chart_directory:
+    description: 'Path to the chart directory'
     required: true
-  arm_client_secret:
-    description: "Azure Client Secret"
+  chart_name:
+    description: 'Name of the Helm chart'
     required: true
+
 runs:
-  using: 'composite'
+  using: 'bash'
   steps:
-    - name: Check out code
+    - name: Checkout repository
       uses: actions/checkout@v3
-    - name: Login to Azure with Service Principal
+
+    - name: Install Helm
       run: |
-        az login --service-principal \
-          -u ${{ inputs.arm_client_id }} \
-          -p ${{ inputs.arm_client_secret }} \
-          --tenant ${{ inputs.arm_tenant_id }}
+        curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
       shell: bash
-    - name: Log in to ACR
+
+    - name: Login to Harbor
       run: |
-        az acr login --name ${{ inputs.acr_name }}
+        helm registry login ${{ inputs.harbor_ip }} --username ${{ inputs.harbor_username }} --password ${{ inputs.harbor_password }}
       shell: bash
-    - name: Build Docker Image
+
+    - name: Package Helm Chart
       run: |
-        docker build -t ${{ inputs.acr_name }}.azurecr.io/${{ inputs.image_name }}:${{ inputs.image_tag }} .
+        helm package ${{ inputs.chart_name }}
+      working-directory: ${{ inputs.chart_directory }}
       shell: bash
-    - name: Push Docker Image
+
+    - name: Push Helm Chart to Harbor
       run: |
-        docker push ${{ inputs.acr_name }}.azurecr.io/${{ inputs.image_name }}:${{ inputs.image_tag }}
+        helm push $(ls ${inputs.chart_name}-*.tgz) oci://${{ inputs.harbor_ip }}/${{ inputs.harbor_username }}
+      working-directory: ${{ inputs.chart_directory }}
       shell: bash
-        
