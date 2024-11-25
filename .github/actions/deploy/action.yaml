@@ -25,6 +25,14 @@ inputs:
     description: 'Azure Container Registry name'
     required: true
     type: string
+  acr_password:
+    description: 'Azure Container Registry pass'
+    required: true
+    type: string
+  acr_email:
+    description: 'Azure Container Registry email'
+    required: true
+    type: string
   image_name:
     description: 'Name of the Docker image'
     required: true
@@ -96,9 +104,22 @@ runs:
       run: |
         az aks get-credentials --resource-group ${{ inputs.aks_resource_group }} --name ${{ inputs.aks_cluster_name }}
       shell: bash
+    - name: Log in to ACR
+      run: |
+        az acr login --name ${{ inputs.acr_name }}
+      shell: bash
     - name: Helm Login
       run: |
         helm registry login ${{ inputs.harbor_ip }} --username ${{ inputs.harbor_username }} --password ${{ inputs.harbor_password }}
+      shell: bash
+    
+    - name: Create acr secret
+      run: |
+        kubectl create secret docker-registry ${{ inputs.acr_secret_name }} \
+        --docker-server=${{ inputs.acr_name }}.azurecr.io \
+        --docker-username=${{ inputs.acr_name }} \
+        --docker-username=${{ inputs.acr_password }} \
+        --docker-email=${{ inputs.acr_email }}
       shell: bash
 
     - name: Deploy with Helm
@@ -110,8 +131,9 @@ runs:
           --set "database.SPRING_DB_NAME=${{ inputs.db_name }}" \
           --set "database.SPRING_DB_USER=${{ inputs.db_user }}" \
           --set "database.SPRING_DB_PASSWORD=${{ inputs.db_pass }}"
+          --set "image.repository=${{ inputs.acr_name }}.azurecr.io/${{ inputs.image_name }}" \
+          --set "image.tag=${{ inputs.image_tag }}" \
+          --set "image.pullSecret=${{ inputs.acr_secret_name }}"
       shell: bash
 
-      # --set "image.repository=${{ inputs.acr_name }}.azurecr.io/${{ inputs.image_name }}" \
-      #     --set "image.tag=${{ inputs.image_tag }}" \
-      #     --set "image.pullSecret=${{ inputs.acr_secret_name }}"
+      
