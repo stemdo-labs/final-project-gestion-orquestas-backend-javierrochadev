@@ -11,6 +11,19 @@ jobs:
     steps:
       - name: Check out repository
         uses: actions/checkout@v3
+      - name: Set up script permissions
+        run: |
+          chmod +x ./extract_version.sh
+          chmod +x ./upload_version.sh
+
+      - name: Extract and increment version
+        run: |
+          NEW_VERSION=$(./extract_version.sh)
+          echo "NEW_VERSION=$NEW_VERSION" >> $GITHUB_ENV
+
+      - name: Upload version into file
+        run: |
+          ./upload_version.sh "$NEW_VERSION"
 
       # - name: Usar la acción para extraer la versión
       #   uses: ./.github/actions/extract-version
@@ -37,7 +50,7 @@ jobs:
         with:
           acr_name: ${{ secrets.ACR_NAME }}
           image_name: "myapp-backend"
-          image_tag: "4.0.0"
+          image_tag: "${{ env.NEW_VERSION }}"
           arm_client_id: ${{ secrets.ARM_CLIENT_ID }}
           arm_client_secret: ${{ secrets.ARM_CLIENT_SECRET }}
           arm_tenant_id: ${{ secrets.ARM_TENANT_ID }}
