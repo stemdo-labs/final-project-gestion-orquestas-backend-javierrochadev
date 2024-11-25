@@ -136,14 +136,14 @@ runs:
           --set "database.SPRING_DB_NAME=${{ inputs.db_name }}" \
           --set "database.SPRING_DB_USER=${{ inputs.db_user }}" \
           --set "database.SPRING_DB_PASSWORD=${{ inputs.db_pass }}" \
-          --set "image.repository=jrochadev/backend" \
-          --set "image.tag=1.0" \
           --set "image.repository=${{ inputs.acr_name }}.azurecr.io/${{ inputs.image_name }}" \
           --set "image.tag=${{ inputs.image_tag }}" \
           --set "image.pullSecret=${{ inputs.acr_secret_name }}"
-      shell: bash
+          shell: bash
           
+#   --set "image.tag=1.0" \
 # --set "image.repository=${{ inputs.acr_name }}.azurecr.io/${{ inputs.image_name }}" \
 # --set "image.tag=${{ inputs.image_tag }}" \
 # --set "image.pullSecret=${{ inputs.acr_secret_name }}"
+# --set "image.repository=jrochadev/backend" \
       
