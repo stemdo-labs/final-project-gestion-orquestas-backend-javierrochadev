@@ -112,6 +112,12 @@ runs:
       run: |
         helm registry login ${{ inputs.harbor_ip }} --username ${{ inputs.harbor_username }} --password ${{ inputs.harbor_password }}
       shell: bash
+
+    - name: Delete secret if exists
+      run: |
+        kubectl delete secret ${{inputs.acr_secret_name}} --ignore-not-found 
+      shell: bash
+
     
     - name: Create acr secret
       run: |
