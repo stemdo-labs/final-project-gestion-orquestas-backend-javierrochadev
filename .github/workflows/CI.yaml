@@ -35,6 +35,7 @@ jobs:
           arm_client_secret: ${{ secrets.ARM_CLIENT_SECRET }}
           arm_tenant_id: ${{ secrets.ARM_TENANT_ID }}
 
+
       - name: Upload an image 
         uses: ./.github/actions/deploy
         with:
