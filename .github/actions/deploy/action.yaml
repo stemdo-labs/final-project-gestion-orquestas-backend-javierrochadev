@@ -105,11 +105,11 @@ runs:
       run: |
         helm upgrade --install ${{inputs.chart_name}} oci://${{inputs.harbor_ip}}/${{inputs.harbor_username}}/${{inputs.chart_name}} \
           --namespace default \
-          --set "database.SPRING_DB_HOST=${{ inputs.db_host }}" \
-          --set "database.SPRING_DB_PORT=${{ inputs.db_port }}" \
-          --set "database.SPRING_DB_NAME=${{ inputs.db_name }}" \
-          --set "database.SPRING_DB_USER=${{ inputs.db_user }}" \
-          --set "database.SPRING_DB_PASSWORD=${{ inputs.db_pass }}"
+          --set "database.backend.SPRING_DB_HOST=${{ inputs.db_host }}" \
+          --set "database.backend.SPRING_DB_PORT=${{ inputs.db_port }}" \
+          --set "database.backend.SPRING_DB_NAME=${{ inputs.db_name }}" \
+          --set "database.backend.SPRING_DB_USER=${{ inputs.db_user }}" \
+          --set "database.backend.SPRING_DB_PASSWORD=${{ inputs.db_pass }}"
       shell: bash
 
       # --set "image.repository=${{ inputs.acr_name }}.azurecr.io/${{ inputs.image_name }}" \
