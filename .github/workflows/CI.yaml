@@ -36,7 +36,7 @@ jobs:
         uses: ./.github/actions/deploy
         with:
           acr_name: ${{ secrets.ACR_NAME }}
-          image_name: "myapp"
+          image_name: "myapp-backend"
           image_tag: "4.0.0"
           arm_client_id: ${{ secrets.ARM_CLIENT_ID }}
           arm_client_secret: ${{ secrets.ARM_CLIENT_SECRET }}
@@ -49,5 +49,8 @@ jobs:
           db_port: ${{ secrets.DB_PORT }}
           db_user: ${{ secrets.DB_USER }}
           db_host: ${{ secrets.DB_HOST }}
-          helm_chart_path: "./manifest/backend"
+          chart_name: "frontend"
+          harbor_username: ${{ secrets.HARBOR_USER }}
+          harbor_password: ${{ secrets.HARBOR_PASS }}
+          harbor_ip: ${{ secrets.HARBOR_IP }}
           
