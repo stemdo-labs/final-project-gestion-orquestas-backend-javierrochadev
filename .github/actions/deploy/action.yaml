@@ -118,7 +118,7 @@ runs:
         kubectl create secret docker-registry ${{ inputs.acr_secret_name }} \
         --docker-server=${{ inputs.acr_name }}.azurecr.io \
         --docker-username=${{ inputs.acr_name }} \
-        --docker-username=${{ inputs.acr_password }} \
+        --docker-password=${{ inputs.acr_password }} \
         --docker-email=${{ inputs.acr_email }}
       shell: bash
 
