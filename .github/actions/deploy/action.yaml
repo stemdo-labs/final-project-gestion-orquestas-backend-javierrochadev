@@ -1,7 +1,7 @@
 name: 'Deploy to AKS with Helm'
 description: 'Deploys an app to AKS using Helm'
 inputs:
-   db_name:
+  db_name:
     description: 'The database name'
     required: true
     default: ''
