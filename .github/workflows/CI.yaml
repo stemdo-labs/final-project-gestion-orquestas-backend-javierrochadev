@@ -5,9 +5,14 @@ on:
 
 jobs:
   deploy:
-    runs-on: self-hosted
+    runs-on: runner-stemdo-labs
+
 
     steps:
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
       - name: Check out repository
         uses: actions/checkout@v3
 
