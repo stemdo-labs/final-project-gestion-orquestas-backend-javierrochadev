@@ -119,14 +119,13 @@ runs:
       shell: bash
 
     
-    # - name: Create acr secret
-    #   run: |
-    #     kubectl create secret docker-registry ${{ inputs.acr_secret_name }} \
-    #     --docker-server=${{ inputs.acr_name }}.azurecr.io \
-    #     --docker-username=${{ inputs.acr_name }} \
-    #     --docker-password=${{ inputs.acr_password }} \
-    #     --docker-email=${{ inputs.acr_email }}
-    #   shell: bash
+    - name: Create acr secret
+      run: |
+        kubectl create secret docker-registry ${{ inputs.acr_secret_name }} \
+        --docker-server=${{ inputs.acr_name }}.azurecr.io \
+        --docker-username=${{ inputs.arm_client_id }} \
+        --docker-password=${{ inputs.arm_client_secret }} \
+      shell: bash
 
     - name: Deploy with Helm
       run: |
@@ -139,8 +138,9 @@ runs:
           --set "database.SPRING_DB_PASSWORD=${{ inputs.db_pass }}" \
           --set "image.repository=jrochadev/backend" \
           --set "image.tag=1.0" \
-
-
+          --set "image.repository=${{ inputs.acr_name }}.azurecr.io/${{ inputs.image_name }}" \
+          --set "image.tag=${{ inputs.image_tag }}" \
+          --set "image.pullSecret=${{ inputs.acr_secret_name }}"
       shell: bash
           
 # --set "image.repository=${{ inputs.acr_name }}.azurecr.io/${{ inputs.image_name }}" \
