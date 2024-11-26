@@ -1,8 +1,10 @@
 name: CI CD Pipeline
 
 on:
+  push:
+    branches:
+      - main  
   workflow_dispatch:
-
 jobs:
   deploy:
     runs-on: runner-stemdo-labs
