@@ -138,13 +138,16 @@ runs:
       shell: bash
 
     
-    - name: Create acr secret
+    - name: Create Docker registry secret in default namespace
       run: |
-        kubectl create secret docker-registry ${{ inputs.acr_secret_name }} \
-        --docker-server=${{ inputs.acr_name }}.azurecr.io \
-        --docker-username=${{ inputs.arm_client_id }} \
-        --docker-password=${{ inputs.arm_client_secret }} \
+        kubectl create secret docker-registry my-docker-secret \
+          --docker-server=***.azurecr.io \
+          --docker-username=${{ secrets.AZURE_USERNAME }} \
+          --docker-password=${{ secrets.AZURE_PASSWORD }} \
+          --docker-email=${{ secrets.AZURE_EMAIL }} \
+          --namespace=default
       shell: bash
+    
 
     - name: Deploy with Helm
       run: |
