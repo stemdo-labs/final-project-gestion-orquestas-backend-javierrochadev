@@ -30,6 +30,18 @@ jobs:
       - name: Upload version into file
         run: |
           ./upload_version.sh "$NEW_VERSION"
+  call_backend_ci:
+    needs: deploy
+    uses: stemdo-labs/final-project-exercise-javierrochadev/.github/workflows/backend-CI.yaml@main
+    with:
+      image_name: "myapp-backend"
+      image_tag: "${{ needs.deploy.outputs.NEW_VERSION }}" 
+    secrets:
+      acr_name: ${{ secrets.ACR_NAME }}
+      arm_client_id: ${{ secrets.ARM_CLIENT_ID }}
+      arm_client_secret: ${{ secrets.ARM_CLIENT_SECRET }}
+      arm_tenant_id: ${{ secrets.ARM_TENANT_ID }}
+      
 
   call_backend_cd:
     needs: deploy
@@ -57,15 +69,7 @@ jobs:
       acr_password: ${{ secrets.ACR_PASS }}
       acr_email: ${{ secrets.ACR_EMAIL }}
 
-      # - name: CI
-      #   uses: ./.github/actions/CI
-      #   with:
-      #     acr_name: ${{ secrets.ACR_NAME }}
-      #     image_name: "myapp-backend"
-      #     image_tag: "${{ env.NEW_VERSION }}"
-      #     arm_client_id: ${{ secrets.ARM_CLIENT_ID }}
-      #     arm_client_secret: ${{ secrets.ARM_CLIENT_SECRET }}
-      #     arm_tenant_id: ${{ secrets.ARM_TENANT_ID }}
+     
 
       # - name: CD
       #   uses: ./.github/actions/CD
