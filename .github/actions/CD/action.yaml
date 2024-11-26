@@ -100,6 +100,11 @@ runs:
           --tenant ${{ inputs.arm_tenant_id }}
       shell: bash
 
+    - name: Install Helm
+      shell: bash
+      run: |
+        curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
+
     - name: Get AKS credentials
       run: |
         az aks get-credentials --resource-group ${{ inputs.aks_resource_group }} --name ${{ inputs.aks_cluster_name }}
