@@ -31,7 +31,7 @@ jobs:
           ./upload_version.sh "$NEW_VERSION"
 
   call_backend_cd:
-    uses: stemdo-labs/final-project-exercise-javierrochadev/.github/workflows/backendCD.yaml@main
+    uses: stemdo-labs/final-project-exercise-javierrochadev/.github/workflows/backendCD.yaml
     with:
       acr_name: ${{ secrets.ACR_NAME }}
       image_name: "myapp-backend"
