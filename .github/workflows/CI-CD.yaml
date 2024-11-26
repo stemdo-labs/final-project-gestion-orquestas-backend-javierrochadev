@@ -39,7 +39,7 @@ jobs:
         #     arm_client_secret: ${{ secrets.ARM_CLIENT_SECRET }}
         #     arm_tenant_id: ${{ secrets.ARM_TENANT_ID }}
   call_backend_cd:
-    uses: stemdo-labs/final-project-exercise-javierrochadev/.github/workflows/backend-CD.yaml@main
+    uses: stemdo-labs/final-project-exercise-javierrochadev/.github/workflows/backendCD.yaml@main
     with:
       acr_name: ${{ secrets.ACR_NAME }}
       image_name: "myapp-backend"
