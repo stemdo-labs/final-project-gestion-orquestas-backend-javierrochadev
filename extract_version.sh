@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Archivo POM del cual extraer y modificar el valor
+# Archivo POM del cual extraer la versión
 POM_FILE="pom.xml"
 
 # Comprobamos si el archivo existe
@@ -9,32 +9,14 @@ if [[ ! -f "$POM_FILE" ]]; then
     exit 1
 fi
 
-# Extraer el valor actual de <modelVersion>
-MODEL_VERSION=$(grep "<modelVersion>" "$POM_FILE" | sed 's/^[ \t]*<modelVersion>\(.*\)<\/modelVersion>/\1/')
+# Extraer la versión dentro del bloque <parent> usando grep con sed para obtener el contenido de la etiqueta <version>
+PARENT_VERSION=$(grep -A 3 "<parent>" "$POM_FILE" | grep "<version>" | sed 's/^[ \t]*<version>\(.*\)<\/version>/\1/')
 
-# Separar la versión en partes (Major, Middle, Minor)
-IFS='.' read -r MAJOR MIDDLE MINOR <<< "$MODEL_VERSION"
-
-# Incrementar la versión
-if [[ $MINOR -lt 9 ]]; then
-    MINOR=$((MINOR + 1))
-else
-    MINOR=0
-    if [[ $MIDDLE -lt 9 ]]; then
-        MIDDLE=$((MIDDLE + 1))
-    else
-        MIDDLE=0
-        if [[ $MAJOR -lt 9 ]]; then
-            MAJOR=$((MAJOR + 1))
-        else
-            echo "¡La versión ha alcanzado su límite máximo! 9.9.9"
-            exit 1
-        fi
-    fi
+# Comprobamos si se ha encontrado la versión
+if [[ -z "$PARENT_VERSION" ]]; then
+    echo "No se pudo encontrar la versión dentro del bloque <parent> en el archivo $POM_FILE."
+    exit 1
 fi
 
-# Nueva versión
-NEW_VERSION="$MAJOR.$MIDDLE.$MINOR"
-
-# Mostrar la nueva versión
-echo "$NEW_VERSION"
+# Devolver solo la versión (sin ningún otro texto)
+echo "$PARENT_VERSION"
