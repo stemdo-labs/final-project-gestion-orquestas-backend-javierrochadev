@@ -44,7 +44,9 @@ jobs:
       
 
   call_backend_cd:
-    needs: deploy
+    needs:
+      - deploy
+      - call_backend_ci
     uses: stemdo-labs/final-project-exercise-javierrochadev/.github/workflows/backend-CD.yaml@main
     with:
       image_name: "myapp-backend"
