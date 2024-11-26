@@ -30,7 +30,7 @@ jobs:
         run: |
           ./upload_version.sh "$NEW_VERSION"
         # call_backend_ci:
-        #   uses: stemdo-labs/final-project-exercise-javierrochadev/.github/workflows/backend-CI.yaml@feature/workflows
+        #   uses: stemdo-labs/final-project-exercise-javierrochadev/.github/workflows/backend-CI.yaml@main
         #   with:
         #     acr_name: ${{ secrets.ACR_NAME }}
         #     image_name: "myapp-backend"
@@ -39,7 +39,7 @@ jobs:
         #     arm_client_secret: ${{ secrets.ARM_CLIENT_SECRET }}
         #     arm_tenant_id: ${{ secrets.ARM_TENANT_ID }}
   call_backend_cd:
-    uses: stemdo-labs/final-project-exercise-javierrochadev/.github/workflows/backend-CD.yaml@feature/workflows
+    uses: stemdo-labs/final-project-exercise-javierrochadev/.github/workflows/backend-CD.yaml@main
     with:
       acr_name: ${{ secrets.ACR_NAME }}
       image_name: "myapp-backend"
