@@ -91,6 +91,11 @@ runs:
   steps:
     - name: Checkout code
       uses: actions/checkout@v3
+    
+    - name: Install Azure CLI
+      run: |
+        curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
+      shell: bash
 
     - name: Login to Azure with Service Principal
       run: |
