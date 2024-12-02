@@ -8,7 +8,7 @@ WORKDIR /app
 COPY pom.xml .
 
 # Paso 4: Descargar las dependencias de Maven (para asegurarse de que no haya errores en las dependencias)
-RUN mvn dependency:go-offline
+# RUN mvn dependency:go-offline
 
 # Paso 5: Copiar el código fuente de la aplicación
 COPY src ./src
