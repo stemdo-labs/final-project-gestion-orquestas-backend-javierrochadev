@@ -1,0 +1,42 @@
+# Valores por defecto para el backend.
+# Este es un archivo formateado en YAML.
+# Declara las variables que se pasarán a tus plantillas.
+
+# Esto configurará el número de réplicas de los pods.
+# Más información sobre ReplicaSets se puede encontrar aquí: https://kubernetes.io/docs/concepts/workloads/controllers/replicaset/
+replicaCount: 1  # Número de réplicas del backend (por ejemplo, 1 instancia de pod)
+
+# Configuración de la imagen Docker que se utilizará para el contenedor de la aplicación
+image:
+  repository: "myacrjrochadev.azure.io/backend-app"  # El repositorio Docker donde se encuentra la imagen (por ejemplo, "myrepo/myapp")
+  tag: ""         # La etiqueta de la imagen Docker (por ejemplo, "latest" o una versión específica)
+  pullSecret: ""  # Secreto de Kubernetes para acceder a repositorios privados de Docker
+
+# Configuración de la base de datos que usa la aplicación backend
+# Estos parámetros son usados por la aplicación para conectarse a la base de datos
+database:
+  SPRING_DB_HOST: "10.0.1.4"        # El host (dirección IP o nombre del servicio) de la base de datos
+  SPRING_DB_PORT: "5432"        # El puerto en el que la base de datos está disponible
+  SPRING_DB_NAME: ""        # El nombre de la base de datos a la que la aplicación se conectará
+  SPRING_DB_USER: ""        # El nombre de usuario para conectarse a la base de datos
+  SPRING_DB_PASSWORD: ""    # La contraseña para conectarse a la base de datos
+
+# Configuración de escalado automático para la aplicación backend
+# Esto habilita y configura el escalado horizontal de pods basado en el uso de CPU
+autoscaling:
+    enabled: true  # Habilita el escalado automático (true/false)
+    minReplicas: ""  # Número mínimo de réplicas para la aplicación (cuando la carga es baja)
+    maxReplicas: ""  # Número máximo de réplicas para la aplicación (cuando la carga es alta)
+    targetCPUUtilizationPercentage: ""  # Porcentaje de utilización de CPU que desencadenará el escalado (por ejemplo, escalar si el uso de CPU supera el 60%)
+
+# Configuración de sondas (probes) para verificar la salud de la aplicación
+# La readinessProbe se usa para determinar si el contenedor está listo para recibir tráfico
+probes:
+  readinessProbe:
+    httpGet:
+      path: ""        # El endpoint HTTP que Kubernetes consulta para verificar la salud de la aplicación
+      port: ""            # El puerto en el que el endpoint de salud está disponible
+    initialDelaySeconds: ""  # Tiempo en segundos que Kubernetes esperará antes de hacer la primera comprobación de salud
+    periodSeconds: ""         # Intervalo en segundos entre cada comprobación de salud posterior
+    timeoutSeconds: ""        # Tiempo máximo que Kubernetes esperará para recibir una respuesta de la comprobación
+    failureThreshold: ""      # Número de fallos consecutivos permitidos antes de marcar el pod como no saludable
