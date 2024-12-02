@@ -55,7 +55,8 @@ jobs:
     with:
       image_name: "myapp-backend"
       chart_name: "backend"
-      image_tag: "${{ needs.deploy.outputs.NEW_VERSION }}" 
+      image_tag: "${{ needs.deploy.outputs.NEW_VERSION }}"
+      namespace: "${{ vars.NAMESPACE }}"
     secrets:
       acr_name: ${{ secrets.ACR_NAME }}
       arm_client_id: ${{ secrets.ARM_CLIENT_ID }}
