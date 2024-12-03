@@ -77,4 +77,3 @@ jobs:
       harbor_ip: ${{ secrets.HARBOR_IP }}
       acr_password: ${{ secrets.ACR_PASS }}
       acr_email: ${{ secrets.ACR_EMAIL }}
-      resource_group: ${{ secrets.RESOURCE_GROUP }}
