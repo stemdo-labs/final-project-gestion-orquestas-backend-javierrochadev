@@ -8,7 +8,7 @@ replicaCount: 1  # Número de réplicas del backend (por ejemplo, 1 instancia de
 
 # Configuración de la imagen Docker que se utilizará para el contenedor de la aplicación
 image:
-  repository: "myacrjrochadev.azure.io/myapp-backend"  # El repositorio Docker donde se encuentra la imagen (por ejemplo, "myrepo/myapp")
+  repository: "myacrjrochadev.azurecr.io/myapp-backend"  # El repositorio Docker donde se encuentra la imagen (por ejemplo, "myrepo/myapp")
   tag: ""         # La etiqueta de la imagen Docker (por ejemplo, "latest" o una versión específica)
   pullSecret: ""  # Secreto de Kubernetes para acceder a repositorios privados de Docker
 
