@@ -74,7 +74,7 @@ jobs:
           echo "DB_NAME=${DB_NAME}" >> $GITHUB_ENV
 
       - name: Run tests
-        run: mvn clean test
+        run: mvn clean test -X
 
 
   # call_backend_ci:
