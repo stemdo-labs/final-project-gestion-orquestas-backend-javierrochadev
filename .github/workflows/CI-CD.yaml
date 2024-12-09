@@ -39,6 +39,8 @@ jobs:
     runs-on: ubuntu-latest
     needs:
       - extract_version
+    if: github.ref == 'refs/heads/main'
+    environment: Production
     services:
       postgres:
         image: postgres:latest
@@ -82,44 +84,44 @@ jobs:
       #   shell: bash
 
 
-  call_backend_ci:
-    needs: extract_version
-    uses: stemdo-labs/final-project-exercise-javierrochadev/.github/workflows/backend-CI.yaml@main
-    with:
-      image_name: "myapp-backend"
-      image_tag: "${{ needs.extract_version.outputs.NEW_VERSION }}" 
-    secrets:
-      acr_name: ${{ secrets.ACR_NAME }}
-      arm_client_id: ${{ secrets.ARM_CLIENT_ID }}
-      arm_client_secret: ${{ secrets.ARM_CLIENT_SECRET }}
-      arm_tenant_id: ${{ secrets.ARM_TENANT_ID }}
+  # call_backend_ci:
+  #   needs: extract_version
+  #   uses: stemdo-labs/final-project-exercise-javierrochadev/.github/workflows/backend-CI.yaml@main
+  #   with:
+  #     image_name: "myapp-backend"
+  #     image_tag: "${{ needs.extract_version.outputs.NEW_VERSION }}" 
+  #   secrets:
+  #     acr_name: ${{ secrets.ACR_NAME }}
+  #     arm_client_id: ${{ secrets.ARM_CLIENT_ID }}
+  #     arm_client_secret: ${{ secrets.ARM_CLIENT_SECRET }}
+  #     arm_tenant_id: ${{ secrets.ARM_TENANT_ID }}
     
-  call_backend_cd:
-    needs:
-      - extract_version
-      - call_backend_ci
-    uses: stemdo-labs/final-project-exercise-javierrochadev/.github/workflows/backend-CD.yaml@main
-    with:
-      image_name: "myapp-backend"
-      chart_name: "backend"
-      image_tag: "${{ needs.extract_version.outputs.NEW_VERSION }}"
-      namespace: "${{ vars.NAMESPACE }}"
-    secrets:
-      acr_name: ${{ secrets.ACR_NAME }}
-      arm_client_id: ${{ secrets.ARM_CLIENT_ID }}
-      arm_client_secret: ${{ secrets.ARM_CLIENT_SECRET }}
-      arm_tenant_id: ${{ secrets.ARM_TENANT_ID }}
-      arm_subscription_id: ${{ secrets.ARM_SUBSCRIPTION_ID }}
-      aks_resource_group: ${{ secrets.RESOURCE_GROUP_NAME }}
-      aks_cluster_name: ${{ secrets.AKS_NAME }}
-      acr_secret_name: ${{ secrets.ACR_SECRET_NAME }}
-      db_name: ${{ secrets.DB_NAME }}
-      db_pass: ${{ secrets.DB_PASSWORD }}
-      db_port: ${{ secrets.DB_PORT }}
-      db_user: ${{ secrets.DB_USER }}
-      db_host: ${{ secrets.DB_HOST }}
-      harbor_username: ${{ secrets.HARBOR_USER }}
-      harbor_password: ${{ secrets.HARBOR_PASS }}
-      harbor_ip: ${{ secrets.HARBOR_IP }}
-      acr_password: ${{ secrets.ACR_PASS }}
-      acr_email: ${{ secrets.ACR_EMAIL }}
+  # call_backend_cd:
+  #   needs:
+  #     - extract_version
+  #     # - call_backend_ci
+  #   uses: stemdo-labs/final-project-exercise-javierrochadev/.github/workflows/backend-CD.yaml@main
+  #   with:
+  #     image_name: "myapp-backend"
+  #     chart_name: "backend"
+  #     image_tag: "${{ needs.extract_version.outputs.NEW_VERSION }}"
+  #     namespace: "${{ vars.NAMESPACE }}"
+  #   secrets:
+  #     acr_name: ${{ secrets.ACR_NAME }}
+  #     arm_client_id: ${{ secrets.ARM_CLIENT_ID }}
+  #     arm_client_secret: ${{ secrets.ARM_CLIENT_SECRET }}
+  #     arm_tenant_id: ${{ secrets.ARM_TENANT_ID }}
+  #     arm_subscription_id: ${{ secrets.ARM_SUBSCRIPTION_ID }}
+  #     aks_resource_group: ${{ secrets.RESOURCE_GROUP_NAME }}
+  #     aks_cluster_name: ${{ secrets.AKS_NAME }}
+  #     acr_secret_name: ${{ secrets.ACR_SECRET_NAME }}
+  #     db_name: ${{ secrets.DB_NAME }}
+  #     db_pass: ${{ secrets.DB_PASSWORD }}
+  #     db_port: ${{ secrets.DB_PORT }}
+  #     db_user: ${{ secrets.DB_USER }}
+  #     db_host: ${{ secrets.DB_HOST }}
+  #     harbor_username: ${{ secrets.HARBOR_USER }}
+  #     harbor_password: ${{ secrets.HARBOR_PASS }}
+  #     harbor_ip: ${{ secrets.HARBOR_IP }}
+  #     acr_password: ${{ secrets.ACR_PASS }}
+  #     acr_email: ${{ secrets.ACR_EMAIL }}
