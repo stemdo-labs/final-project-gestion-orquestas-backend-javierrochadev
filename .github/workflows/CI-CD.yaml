@@ -77,7 +77,7 @@ jobs:
       #   run: mvn clean test -X
       - name: testing
         run: |
-          echo tensting...
+          echo testing...
           sleep 10
         shell: bash
 
