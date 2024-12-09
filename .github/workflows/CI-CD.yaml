@@ -104,6 +104,7 @@ jobs:
     with:
       image_name: "myapp-backend"
       chart_name: "backend"
+      release_name: ${{ github.ref == 'refs/heads/main' && 'backend' || 'dev-backend' }}
       image_tag: "${{ needs.extract_version.outputs.NEW_VERSION }}"
       namespace: "${{ vars.NAMESPACE }}"
     secrets:
