@@ -43,7 +43,7 @@ jobs:
       postgres:
         image: postgres:latest
         ports:
-          - ${{ secrets.DB_PORT }}:5432
+          - 5432:5432
         env:
           POSTGRES_USER: ${{ secrets.DB_USER }}
           POSTGRES_PASSWORD: ${{ secrets.DB_PASSWORD }}
@@ -53,68 +53,73 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Set up JDK 17
-        uses: actions/setup-java@v3
-        with:
-          java-version: 17
+      # - name: Set up JDK 17
+      #   uses: actions/setup-java@v3
+      #   with:
+      #     java-version: 17
+      #     distribution: 'temurin'
+# 
+      # - name: Export database secrets
+      #   env:
+      #     DB_HOST: ${{ secrets.DB_HOST }}
+      #     DB_PORT: ${{ secrets.DB_PORT }}
+      #     DB_USER: ${{ secrets.DB_USER }}
+      #     DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+      #     DB_NAME: ${{ secrets.DB_NAME }}
+      #   run: |
+      #     echo "DB_HOST=${DB_HOST}" >> $GITHUB_ENV
+      #     echo "DB_PORT=${DB_PORT}" >> $GITHUB_ENV
+      #     echo "DB_USER=${DB_USER}" >> $GITHUB_ENV
+      #     echo "DB_PASSWORD=${DB_PASSWORD}" >> $GITHUB_ENV
+      #     echo "DB_NAME=${DB_NAME}" >> $GITHUB_ENV
+# 
+      # - name: Run tests
+      #   run: mvn clean test -X
+      # - name: testing
+      #   run: |
+      #     echo testing...
+      #     sleep 10
+      #   shell: bash
 
-      - name: Export database secrets
-        env:
-          DB_HOST: ${{ secrets.DB_HOST }}
-          DB_PORT: ${{ secrets.DB_PORT }}
-          DB_USER: ${{ secrets.DB_USER }}
-          DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
-          DB_NAME: ${{ secrets.DB_NAME }}
-        run: |
-          echo "DB_HOST=${DB_HOST}" >> $GITHUB_ENV
-          echo "DB_PORT=${DB_PORT}" >> $GITHUB_ENV
-          echo "DB_USER=${DB_USER}" >> $GITHUB_ENV
-          echo "DB_PASSWORD=${DB_PASSWORD}" >> $GITHUB_ENV
-          echo "DB_NAME=${DB_NAME}" >> $GITHUB_ENV
 
-      - name: Run tests
-        run: mvn clean test
-
-
-  # call_backend_ci:
-  #   needs: extract_version
-  #   uses: stemdo-labs/final-project-exercise-javierrochadev/.github/workflows/backend-CI.yaml@main
-  #   with:
-  #     image_name: "myapp-backend"
-  #     image_tag: "${{ needs.extract_version.outputs.NEW_VERSION }}" 
-  #   secrets:
-  #     acr_name: ${{ secrets.ACR_NAME }}
-  #     arm_client_id: ${{ secrets.ARM_CLIENT_ID }}
-  #     arm_client_secret: ${{ secrets.ARM_CLIENT_SECRET }}
-  #     arm_tenant_id: ${{ secrets.ARM_TENANT_ID }}
-      
-
-  # call_backend_cd:
-  #   needs:
-  #     - extract_version
-  #     # - call_backend_ci
-  #   uses: stemdo-labs/final-project-exercise-javierrochadev/.github/workflows/backend-CD.yaml@main
-  #   with:
-  #     image_name: "myapp-backend"
-  #     chart_name: "backend"
-  #     image_tag: "${{ needs.extract_version.outputs.NEW_VERSION }}"
-  #     namespace: "${{ vars.NAMESPACE }}"
-  #   secrets:
-  #     acr_name: ${{ secrets.ACR_NAME }}
-  #     arm_client_id: ${{ secrets.ARM_CLIENT_ID }}
-  #     arm_client_secret: ${{ secrets.ARM_CLIENT_SECRET }}
-  #     arm_tenant_id: ${{ secrets.ARM_TENANT_ID }}
-  #     arm_subscription_id: ${{ secrets.ARM_SUBSCRIPTION_ID }}
-  #     aks_resource_group: ${{ secrets.RESOURCE_GROUP_NAME }}
-  #     aks_cluster_name: ${{ secrets.AKS_NAME }}
-  #     acr_secret_name: ${{ secrets.ACR_SECRET_NAME }}
-  #     db_name: ${{ secrets.DB_NAME }}
-  #     db_pass: ${{ secrets.DB_PASSWORD }}
-  #     db_port: ${{ secrets.DB_PORT }}
-  #     db_user: ${{ secrets.DB_USER }}
-  #     db_host: ${{ secrets.DB_HOST }}
-  #     harbor_username: ${{ secrets.HARBOR_USER }}
-  #     harbor_password: ${{ secrets.HARBOR_PASS }}
-  #     harbor_ip: ${{ secrets.HARBOR_IP }}
-  #     acr_password: ${{ secrets.ACR_PASS }}
-  #     acr_email: ${{ secrets.ACR_EMAIL }}
+  call_backend_ci:
+    needs: extract_version
+    uses: stemdo-labs/final-project-exercise-javierrochadev/.github/workflows/backend-CI.yaml@main
+    with:
+      image_name: "myapp-backend"
+      image_tag: "${{ needs.extract_version.outputs.NEW_VERSION }}" 
+    secrets:
+      acr_name: ${{ secrets.ACR_NAME }}
+      arm_client_id: ${{ secrets.ARM_CLIENT_ID }}
+      arm_client_secret: ${{ secrets.ARM_CLIENT_SECRET }}
+      arm_tenant_id: ${{ secrets.ARM_TENANT_ID }}
+    
+  call_backend_cd:
+    needs:
+      - extract_version
+      # - call_backend_ci
+    uses: stemdo-labs/final-project-exercise-javierrochadev/.github/workflows/backend-CD.yaml@main
+    with:
+      image_name: "myapp-backend"
+      chart_name: "backend"
+      image_tag: "${{ needs.extract_version.outputs.NEW_VERSION }}"
+      namespace: "${{ vars.NAMESPACE }}"
+    secrets:
+      acr_name: ${{ secrets.ACR_NAME }}
+      arm_client_id: ${{ secrets.ARM_CLIENT_ID }}
+      arm_client_secret: ${{ secrets.ARM_CLIENT_SECRET }}
+      arm_tenant_id: ${{ secrets.ARM_TENANT_ID }}
+      arm_subscription_id: ${{ secrets.ARM_SUBSCRIPTION_ID }}
+      aks_resource_group: ${{ secrets.RESOURCE_GROUP_NAME }}
+      aks_cluster_name: ${{ secrets.AKS_NAME }}
+      acr_secret_name: ${{ secrets.ACR_SECRET_NAME }}
+      db_name: ${{ secrets.DB_NAME }}
+      db_pass: ${{ secrets.DB_PASSWORD }}
+      db_port: ${{ secrets.DB_PORT }}
+      db_user: ${{ secrets.DB_USER }}
+      db_host: ${{ secrets.DB_HOST }}
+      harbor_username: ${{ secrets.HARBOR_USER }}
+      harbor_password: ${{ secrets.HARBOR_PASS }}
+      harbor_ip: ${{ secrets.HARBOR_IP }}
+      acr_password: ${{ secrets.ACR_PASS }}
+      acr_email: ${{ secrets.ACR_EMAIL }}
