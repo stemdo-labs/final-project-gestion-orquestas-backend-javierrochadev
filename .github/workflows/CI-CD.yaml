@@ -64,17 +64,17 @@ jobs:
         run: mvn test    
 
 
-  # call_backend_ci:
-  #   needs: extract_version
-  #   uses: stemdo-labs/final-project-exercise-javierrochadev/.github/workflows/backend-CI.yaml@main
-  #   with:
-  #     image_name: "myapp-backend"
-  #     image_tag: "${{ needs.extract_version.outputs.NEW_VERSION }}" 
-  #   secrets:
-  #     acr_name: ${{ secrets.ACR_NAME }}
-  #     arm_client_id: ${{ secrets.ARM_CLIENT_ID }}
-  #     arm_client_secret: ${{ secrets.ARM_CLIENT_SECRET }}
-  #     arm_tenant_id: ${{ secrets.ARM_TENANT_ID }}
+  call_backend_ci:
+    needs: extract_version
+    uses: stemdo-labs/final-project-exercise-javierrochadev/.github/workflows/backend-CI.yaml@main
+    with:
+      image_name: "myapp-backend"
+      image_tag: "${{ needs.extract_version.outputs.NEW_VERSION }}" 
+    secrets:
+      acr_name: ${{ secrets.ACR_NAME }}
+      arm_client_id: ${{ secrets.ARM_CLIENT_ID }}
+      arm_client_secret: ${{ secrets.ARM_CLIENT_SECRET }}
+      arm_tenant_id: ${{ secrets.ARM_TENANT_ID }}
     
   call_backend_cd:
     needs:
