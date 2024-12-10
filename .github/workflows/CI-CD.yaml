@@ -70,6 +70,8 @@ jobs:
     with:
       image_name: "myapp-backend"
       image_tag: "${{ needs.extract_version.outputs.NEW_VERSION }}" 
+      release_env: ${{ github.ref == 'refs/heads/main' && 'pro' || 'dev' }}
+      release_name: "backend"
     secrets:
       acr_name: ${{ secrets.ACR_NAME }}
       arm_client_id: ${{ secrets.ARM_CLIENT_ID }}
